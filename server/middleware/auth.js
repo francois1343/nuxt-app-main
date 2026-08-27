@@ -5,9 +5,10 @@ export default defineEventHandler((event) => {
   // 1. Filtrer : on ne protège QUE les méthodes de modification (POST, PUT, PATCH, DELETE) sur /api/
   const isProtectedMethod = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(event.method)
   const isApiRoute = url.pathname.startsWith('/api/')
+  const isAuthRoute = url.pathname === '/api/auth'
 
-  // Si c'est une simple lecture GET, on laisse passer tout le monde
-  if (!isApiRoute || !isProtectedMethod) {
+  // L'authentification doit rester accessible sans token ; les GET aussi.
+  if (!isApiRoute || !isProtectedMethod || isAuthRoute) {
     return
   }
 
