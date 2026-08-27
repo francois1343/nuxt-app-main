@@ -5,9 +5,11 @@ export default defineEventHandler(async (event) => {
     const [rows] = await db.query('SELECT * FROM motos')
     return rows
   } catch (error) {
+    console.error('Erreur MySQL lors de la récupération des motos :', error)
+
     throw createError({
       statusCode: 500,
-      statusMessage: `Erreur MySQL: ${error.message}`
+      statusMessage: 'Impossible de récupérer les motos.'
     })
   }
 })

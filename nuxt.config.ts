@@ -9,6 +9,6 @@ export default defineNuxtConfig({
     dbName: 'u868520261_nuxt',
     dbPassword: 'NuxtCepegra11!',
   // Clé accessible uniquement côté serveur
-    //apiSecretToken: process.env.API_SECRET_TOKEN || 'mon-super-token-secret-123'
-  }
+  //apiSecretToken: process.env.API_SECRET_TOKEN || 'mon-super-token-secret-123'
+  },
 })
