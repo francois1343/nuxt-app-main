@@ -1,4 +1,5 @@
 import { db } from "~~/server/utils/db";
+import { createSessionToken } from "~~/server/utils/session";
 
 export default defineEventHandler(async (event) => {
   // 1. Récupérer les identifiants envoyés par le client.
@@ -38,6 +39,19 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Login ou mot de passe incorrect.",
     });
   }
+
+  // 5. Créer puis stocker la session dans un cookie inaccessible à JavaScript.
+  const config = useRuntimeConfig();
+  const tokenValue = rows[0].id + rows[0].login;
+  const token = createSessionToken(tokenValue, config.apiSecretToken);
+
+  setCookie(event, "api_token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 60 * 60 * 24 * 7,
+    path: "/",
+  });
 
   return {
     message: "Authentification réussie.",

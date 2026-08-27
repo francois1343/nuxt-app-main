@@ -1,4 +1,6 @@
 // server/middleware/auth.js
+import { isSessionTokenValid } from "~~/server/utils/session"
+
 export default defineEventHandler((event) => {
   const url = getRequestURL(event)
 
@@ -12,14 +14,13 @@ export default defineEventHandler((event) => {
     return
   }
 
-  // 2. Extraire le token depuis le header Authorization: Bearer <token>
-  const authHeader = getRequestHeader(event, 'authorization')
-  const token = authHeader?.split(' ')[1] // Récupère le texte après "Bearer "
+  // 2. Lire le cookie envoyé automatiquement avec la requête.
+  const token = getCookie(event, 'api_token')
 
   const config = useRuntimeConfig()
 
-  // 3. Vérification du token
-  if (!token || token !== config.apiSecretToken) {
+  // 3. Vérifier la signature du token.
+  if (!isSessionTokenValid(token, config.apiSecretToken)) {
     throw createError({
       statusCode: 401,
       statusMessage: 'Accès refusé : Token d\'API invalide ou manquant.'
