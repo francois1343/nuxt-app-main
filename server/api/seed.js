@@ -1,11 +1,11 @@
 // server/api/seed.get.js
 
-if (process.env.NODE_ENV === 'production') {
-  throw createError({
-    statusCode: 403,
-    statusMessage: 'Le rechargement des seeds est interdit en production.'
-  })
-}
+// if (process.env.NODE_ENV === 'production') {
+//  throw createError({
+//    statusCode: 403,
+//    statusMessage: 'Le rechargement des seeds est interdit en production.'
+//  })
+// }
 
 import Database from 'better-sqlite3'
 
